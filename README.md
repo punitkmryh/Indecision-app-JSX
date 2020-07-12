@@ -1,5 +1,5 @@
 # Indecision-app-JSX
-A simple application using ReactJS and JSX basics.
+An Indecision application using ReactJS and JSX basics.
 
 [![forthebadge](https://forthebadge.com/images/badges/made-with-javascript.svg)]
 
