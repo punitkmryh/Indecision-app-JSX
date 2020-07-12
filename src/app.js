@@ -1,99 +1,58 @@
-class IndecisionApp extends React.Component {
-  render() {
-    const title = "Indecision Application";
-    const subtitle = "❁ Get a way Life ❁";
-    const options = ["item 1", "item 2", "item 3"];
-    return (
-      <div>
-        <Header title={title} subtitle={subtitle} />
-        <Action />
-        <Options options={options} />
-        <AddOption />
-      </div>
-    );
-  }
-}
+console.log("app.js is running");
 
-class Header extends React.Component {
-  render() {
-    return (
-      <div>
-        <h1>{this.props.title}</h1>
-        <h2>{this.props.subtitle}</h2>
-      </div>
-    );
-  }
-}
+// JSX- Javascript  XML
+// * React-Element
 
-class Action extends React.Component {
-  handleAction() {
-    alert("handlePick");
-  }
-  render() {
-    return (
-      <div>
-        <button onClick={this.handleAction}>What Should I Do?</button>
-      </div>
-    );
-  }
-}
+const app = {
+  title: "☸️ Indecision App ",
+  subtitle: "Find a way to life",
+  options: [],
+};
 
-class Options extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleRemoveAll = this.handleRemoveAll.bind(this);
-  }
-  handleRemoveAll() {
-    console.log(this.props.options);
-  }
-  render() {
-    return (
-      <div>
-        <button onClick={this.handleRemoveAll}>RemoveAll</button>
-        <p>
-          {this.props.options.length > 0
-            ? "Here are some options"
-            : "No options"}
-        </p>
+const onForumSubmit = (event) => {
+  event.preventDefault();
+  const option = event.target.elements.option.value;
 
-        <ol>
-          {this.props.options.map((option) => (
-            <Option key={option} optionText={option} />
-          ))}
-        </ol>
-      </div>
-    );
+  if (option) {
+    app.options.push(option);
+    event.target.elements.option.value = "";
+    render();
   }
-}
+};
 
-class Option extends React.Component {
-  render() {
-    return (
-      <div>
-        <li>{this.props.optionText}</li>
-      </div>
-    );
-  }
-}
+const onRemoveAll = () => {
+  app.options = [];
+  render();
+};
 
-class AddOption extends React.Component {
-  handleAddOption(e) {
-    e.preventDefault();
-    const value = e.target.elements.option.value.trim();
+const optionList = (strings) => {
+  return strings.map((string) => <li key="option">{string}</li>);
+};
 
-    if (value) {
-    }
-  }
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.handleAddOption}>
-          <input type="text" name="option" />
-          <button>Add Options</button>
-        </form>
-      </div>
-    );
-  }
-}
+const onMakeDecision = (event) => {
+  const randNum = Math.floor(Math.random() * app.options.length);
+  const option = app.options[randNum];
+  alert(option);
+};
+const render = () => {
+  const templateEle = (
+    <div>
+      <h1>{app.title ? app.title : "Anonymous"}</h1>
+      {app.subtitle && <h3>{app.subtitle}</h3>}
+      {/* FIXME: See React-Basics.md under Conditional Rendering in JSX */}
+      <p>{app.options.length > 0 ? "Here are some options" : "No Options"}</p>
+      <button disabled={app.options.length === 0} onClick={onMakeDecision}>
+        what should I do?
+      </button>
+      <ol>{optionList(app.options)}</ol>
+      <button onClick={onRemoveAll}>Remove All</button>
+      <form onSubmit={onForumSubmit}>
+        <input type="text" name="option"></input>
+        <button>Add Option</button>
+      </form>
+    </div>
+  );
+  ReactDOM.render(templateEle, document.getElementById("app"));
+};
 
-ReactDOM.render(<IndecisionApp />, document.getElementById("app"));
+render();
